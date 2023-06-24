@@ -20,8 +20,8 @@ DEVICE=miatoll
 DEFCONFIG=${DEVICE}_defconfig
 
 # Select LTO variant ( Full LTO by default )
-DISABLE_LTO=1
-THIN_LTO=0
+DISABLE_LTO=0
+THIN_LTO=1
 
 # Files
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
@@ -42,8 +42,8 @@ TANGGAL=$(date +"%F%S")
 
 # Specify Final Zip Name
 ZIPNAME=SUPER.KERNEL
-FINAL_ZIP=${ZIPNAME}-${DEVICE}-${TANGGAL}.zip
-FINAL_ZIP_ALIAS=Karenulmiato-${TANGGAL}.zip
+FINAL_ZIP=${ZIPNAME}-${DEVICE}-${DATE}.zip
+FINAL_ZIP_ALIAS=Karenulmiato-${DATE}.zip
 
 ##----------------------------------------------------------##
 # Specify compiler.
@@ -167,8 +167,8 @@ function exports() {
 	    export DISTRO=$(source /etc/os-release && echo "${NAME}")
 	    
 	    # Server caching for speed up compile
-	    export LC_ALL=C && export USE_CCACHE=1
-	    ccache -M 100G
+	    #export LC_ALL=C && export USE_CCACHE=1
+	    #ccache -M 100G
 	
 	}
         
@@ -306,12 +306,12 @@ function zipping() {
 	
 	# Zipping and Push Kernel
 	cd AnyKernel3 || exit 1
-        zip -r9 ${FINAL_ZIP_ALIAS} *
-        MD5CHECK=$(md5sum "$FINAL_ZIP_ALIAS" | cut -d' ' -f1)
-        echo "Zip: $FINAL_ZIP_ALIAS"
+        zip -r9 ${FINAL_ZIP} *
+        MD5CHECK=$(md5sum "$FINAL_ZIP" | cut -d' ' -f1)
+        echo "Zip: $FINAL_ZIP"
         #curl -T $FINAL_ZIP_ALIAS temp.sh; echo
         #curl -T $FINAL_ZIP_ALIAS https://oshi.at; echo
-        curl --upload-file $FINAL_ZIP_ALIAS https://free.keep.sh; echo
+        curl --upload-file $FINAL_ZIP https://free.keep.sh; echo
     cd ..
 }
 
